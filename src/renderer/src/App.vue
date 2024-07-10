@@ -18,7 +18,7 @@ globalThis.getData = () => {
   console.log(dataList.value)
 }
 onMounted(() => {
-  // dataList.value = readData()
+  dataList.value = readData()
 })
 function saveData(data) {
   if (typeof data === 'string') {
