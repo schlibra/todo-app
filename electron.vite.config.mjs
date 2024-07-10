@@ -4,7 +4,12 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [],
+    optimizeDeps: true,
+    minify: true,
+    build: {
+      afterPack: "./removeLocales.js"
+    }
   },
   preload: {
     plugins: [externalizeDepsPlugin()]
