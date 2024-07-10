@@ -12,22 +12,30 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node-version: [18.x]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 20.x
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20.x
         cache: 'npm'
     - run: npm install
-    - run: npm run build:linux
+    - name: Build electron for linux
+      if: ${{ matrix }} == "ubuntu-latest"
+      run: npm run build:linux
+    - name: Build electron for macos
+      if: ${{ matrix }} == "macos-latest"
+      run: npm run build:mac
+    - name: Build electron for windows
+      if: ${{ matrix }} == "windows-latest"
+      run: npm run build:win
     - name: Publish artifact
       uses: actions/upload-artifact@v4
       with:
