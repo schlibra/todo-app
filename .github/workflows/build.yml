@@ -7,7 +7,7 @@ on:
   push:
     tags:
       - v*.*.*
-    branches: 
+    branches:
       - 'master'
 
 jobs:
@@ -83,3 +83,12 @@ jobs:
       with:
         name: todo_list-${{ github.ref }}_amd64.dmg
         path: dist/todo_list-${{ github.ref }}.dmg
+    - name: Publish Release
+      uses: softprops/action-gh-releases@v1
+      with:
+        files:
+          - dist/todo_list_${{ github.ref }}_amd64.deb
+          - dist/todo_list_${{ github.ref }}_amd64.snap
+          - dist/todo_list-${{ github.ref }}.AppImage
+          - dist/todo_list-${{ github.ref }}-setup.exe
+          - dist/todo_list-${{ github.ref }}.dmg
