@@ -82,7 +82,7 @@ jobs:
         name: todo_list-${{ github.ref }}_amd64.dmg
         path: dist/todo_list-${{ github.ref }}.dmg
     - name: Publish Release
-      uses: softprops/action-gh-releases@v1
+      uses: softprops/action-gh-release@v2
       with:
         files:
           - dist/todo_list_${{ github.ref }}_amd64.deb
