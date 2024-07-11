@@ -1,0 +1,77 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Electron build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node: [ 20.15 ]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest", "macos-13"]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js 20.15
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node }}
+        cache: 'npm'
+    - run: npm install
+    - name: Build electron for linux
+      if: matrix.os == 'ubuntu-latest'
+      run: npm run build:linux
+    - name: Build electron for macos arm64
+      if: matrix.os == 'macos-latest'
+      run: npm run build:mac
+    - name: Build electron for macos x64
+      if: matrix.os == 'macos-13'
+      run: npm run build:mac
+    - name: Build electron for windows
+      if: matrix.os == 'windows-latest'
+      run: npm run build:win
+    - name: Publish artifact amd64 deb
+      uses: actions/upload-artifact@v4
+      if: matrix.os == 'ubuntu-latest'
+      with:
+        name: todo_list_1.0.0_amd64.deb
+        path: dist/todo_list_1.0.0_amd64.deb
+    - name: Publish artifact arm64 deb
+      uses: actions/upload-artifact@v4
+      if: matrix.os == 'ubuntu-latest'
+      with:
+        name: todo_list-1.0.0.AppImage
+        path: dist/todo_list-1.0.0.AppImage
+    - name: Publish artifact amd64 snap
+      uses: actions/upload-artifact@v4
+      if: matrix.os == 'ubuntu-latest'
+      with:
+        name: todo_list_1.0.0_amd64.snap
+        path: dist/todo_list_1.0.0_amd64.snap
+    - name: Publish artifact amd64 exe
+      uses: actions/upload-artifact@v4
+      if: matrix.os == 'windows-latest'
+      with:
+        name: todo_list-1.0.0-setup.exe
+        path: dist\todo_list-1.0.0-setup.exe
+    - name: Publish artifact arm64 dmg
+      uses: actions/upload-artifact@v4
+      if: matrix.os == 'macos-latest'
+      with:
+        name: todo_list-1.0.0_arm64.dmg
+        path: dist/todo_list-1.0.0.dmg
+    - name: Publish artifact amd64 dmg
+      uses: actions/upload-artifact@v4
+      if: matrix.os == 'macos-13'
+      with:
+        name: todo_list-1.0.0_amd64.dmg
+        path: dist/todo_list-1.0.0.dmg
