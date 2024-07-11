@@ -27,14 +27,14 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
         cache: 'npm'
-    - name: Clean node modules
-      if: matrix.os == 'windows-latest'
-      run: rd /s /q node_modules
-    - name: Clean node modules
-      if: matrix.os != 'windows-latest'
-      run: rm -rf node_modules
+    #- name: Clean node modules
+    #  if: matrix.os == 'windows-latest'
+    #  run: rd /s /q node_modules
+    #- name: Clean node modules
+    #  if: matrix.os != 'windows-latest'
+    #  run: rm -rf node_modules
     - name: Install node modules
-      run: yarn install
+      run: npm install
     - name: Build electron for linux
       if: matrix.os == 'ubuntu-latest'
       run: npm run build:linux
