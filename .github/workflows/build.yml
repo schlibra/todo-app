@@ -81,14 +81,14 @@ jobs:
       with:
         name: todo_list-${{ github.ref_name }}_amd64.dmg
         path: dist/todo_list-${{ github.ref_name }}.dmg
-    - name: Publish Release
-      uses: softprops/action-gh-release@v2
-      with:
-        token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-        files: |
-          todo_list_${{ github.ref_name }}_amd64.deb
-          todo_list_${{ github.ref_name }}_amd64.snap
-          todo_list-${{ github.ref_name }}.AppImage
-          todo_list-${{ github.ref_name }}-setup.exe
-          todo_list-${{ github.ref_name }}_arm64.dmg
-          todo_list-${{ github.ref_name }}_amd64.dmg
+#    - name: Publish Release
+#      uses: softprops/action-gh-release@v2
+#      with:
+#        token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+#        files: |
+#          todo_list_${{ github.ref_name }}_amd64.deb
+#          todo_list_${{ github.ref_name }}_amd64.snap
+#          todo_list-${{ github.ref_name }}.AppImage
+#          todo_list-${{ github.ref_name }}-setup.exe
+#          todo_list-${{ github.ref_name }}_arm64.dmg
+#          todo_list-${{ github.ref_name }}_amd64.dmg
