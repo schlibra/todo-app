@@ -5,9 +5,8 @@ name: Electron build
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    tags:
+      - v*.*.*
 
 jobs:
   build:
@@ -43,35 +42,35 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.os == 'ubuntu-latest'
       with:
-        name: todo_list_1.0.0_amd64.deb
-        path: dist/todo_list_1.0.0_amd64.deb
+        name: todo_list_${{ github.ref }}_amd64.deb
+        path: dist/todo_list_${{ github.ref }}_amd64.deb
     - name: Publish artifact arm64 deb
       uses: actions/upload-artifact@v4
       if: matrix.os == 'ubuntu-latest'
       with:
-        name: todo_list-1.0.0.AppImage
-        path: dist/todo_list-1.0.0.AppImage
+        name: todo_list-${{ github.ref }}.AppImage
+        path: dist/todo_list-${{ github.ref }}.AppImage
     - name: Publish artifact amd64 snap
       uses: actions/upload-artifact@v4
       if: matrix.os == 'ubuntu-latest'
       with:
-        name: todo_list_1.0.0_amd64.snap
-        path: dist/todo_list_1.0.0_amd64.snap
+        name: todo_list_${{ github.ref }}_amd64.snap
+        path: dist/todo_list_${{ github.ref }}_amd64.snap
     - name: Publish artifact amd64 exe
       uses: actions/upload-artifact@v4
       if: matrix.os == 'windows-latest'
       with:
-        name: todo_list-1.0.0-setup.exe
-        path: dist\todo_list-1.0.0-setup.exe
+        name: todo_list-${{ github.ref }}-setup.exe
+        path: dist\todo_list-${{ github.ref }}-setup.exe
     - name: Publish artifact arm64 dmg
       uses: actions/upload-artifact@v4
       if: matrix.os == 'macos-latest'
       with:
-        name: todo_list-1.0.0_arm64.dmg
-        path: dist/todo_list-1.0.0.dmg
+        name: todo_list-${{ github.ref }}_arm64.dmg
+        path: dist/todo_list-${{ github.ref }}.dmg
     - name: Publish artifact amd64 dmg
       uses: actions/upload-artifact@v4
       if: matrix.os == 'macos-13'
       with:
-        name: todo_list-1.0.0_amd64.dmg
-        path: dist/todo_list-1.0.0.dmg
+        name: todo_list-${{ github.ref }}_amd64.dmg
+        path: dist/todo_list-${{ github.ref }}.dmg
