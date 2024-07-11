@@ -1,6 +1,6 @@
 {
   "name": "todo_list",
-  "version": "v1.0.7",
+  "version": "1.0.8",
   "description": "代办清单程序 | TODO List",
   "main": "./out/main/index.js",
   "author": "SCH",
