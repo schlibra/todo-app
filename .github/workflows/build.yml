@@ -34,7 +34,7 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: rm -rf node_modules
     - name: Install node modules
-      run: npm install
+      run: yarn install
     - name: Build electron for linux
       if: matrix.os == 'ubuntu-latest'
       run: npm run build:linux
