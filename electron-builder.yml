@@ -10,6 +10,7 @@ files:
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!**/locales/*'
 asarUnpack:
   - resources/**
 win:
@@ -32,9 +33,9 @@ dmg:
 linux:
   target:
     - AppImage
-    - snap
+#    - snap
     - deb
-  maintainer: electronjs.org
+  maintainer: schhz.cn
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
@@ -42,5 +43,6 @@ npmRebuild: false
 publish:
   provider: generic
   url: https://example.com/auto-updates
-#electronDownload:
+electronDownload:
 #  mirror: https://npmmirror.com/mirrors/electron/
+  mirror: https://github.com/electron/electron/releases/download/
