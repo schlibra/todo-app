@@ -84,9 +84,9 @@ jobs:
     - name: Publish Release
       uses: softprops/action-gh-release@v2
       with:
-        files:
-          - dist/todo_list_${{ github.ref }}_amd64.deb
-          - dist/todo_list_${{ github.ref }}_amd64.snap
-          - dist/todo_list-${{ github.ref }}.AppImage
-          - dist/todo_list-${{ github.ref }}-setup.exe
-          - dist/todo_list-${{ github.ref }}.dmg
+        files: |
+          dist/todo_list_${{ github.ref }}_amd64.deb
+          dist/todo_list_${{ github.ref }}_amd64.snap
+          dist/todo_list-${{ github.ref }}.AppImage
+          dist/todo_list-${{ github.ref }}-setup.exe
+          dist/todo_list-${{ github.ref }}.dmg
