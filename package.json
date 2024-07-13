@@ -1,6 +1,6 @@
 {
   "name": "todo_list",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "代办清单程序 | TODO List",
   "main": "./out/main/index.js",
   "author": "SCH",
@@ -17,25 +17,27 @@
     "build:mac": "npm run build && electron-builder --mac",
     "build:linux": "npm run build && electron-builder --linux"
   },
-  "dependencies": {},
+  "dependencies": {
+    "js-base64": "^3.7.7"
+  },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/utils": "^3.0.0",
+    "@element-plus/icons-vue": "^2.3.1",
     "@rushstack/eslint-patch": "^1.10.3",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
+    "@vueuse/core": "^10.11.0",
     "electron": "^31.0.2",
     "electron-builder": "^24.13.3",
+    "electron-updater": "^6.1.7",
     "electron-vite": "^2.3.0",
+    "element-plus": "^2.7.6",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.26.0",
     "prettier": "^3.3.2",
     "vite": "^5.3.1",
-    "vue": "^3.4.30",
-    "@electron-toolkit/preload": "^3.0.1",
-    "@electron-toolkit/utils": "^3.0.0",
-    "@element-plus/icons-vue": "^2.3.1",
-    "@vueuse/core": "^10.11.0",
-    "electron-updater": "^6.1.7",
-    "element-plus": "^2.7.6"
+    "vue": "^3.4.30"
   }
 }

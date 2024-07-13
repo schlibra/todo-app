@@ -1,7 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import fs from 'node:fs'
+import { Base64 } from 'js-base64'
+
+let base64_count = 1
 
 function createWindow() {
   // Create the browser window.
@@ -33,6 +37,55 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  ipcMain.on('open-file-dialog', (event) => {
+    dialog
+      .showOpenDialog(mainWindow, {
+        properties: ['openFile'],
+        title: '读取数据文件',
+        filters: [{ name: 'TODO Data', extensions: ['tdd'] }]
+      })
+      .then(async (r) => {
+        let data = fs.readFileSync(r.filePaths[0], {
+          encoding: 'utf8'
+        })
+        for (let i = 0; i < base64_count; i++) {
+          data = Base64.decode(data)
+        }
+        event.sender.send('selected-file', data)
+      })
+  })
+  ipcMain.on('save-file-dialog', (event, args) => {
+    dialog
+      .showSaveDialog(mainWindow, {
+        properties: ['showOverwriteConfirmation', 'treatPackageAsDirectory'],
+        title: '保存数据到文件',
+        filters: [{ name: 'TODO Data', extensions: ['tdd'] }]
+      })
+      .then((r) => {
+        let data = args
+        let chunk_size = 76
+        for (let i = 0; i < base64_count; i++) {
+          data = Base64.encode(data)
+        }
+        let arr = []
+        for (let i = 0; i < data.length / chunk_size; i++) {
+          if ((i + 1) * chunk_size > data.length) {
+            arr.push(data.substring(i * chunk_size, data.length))
+          } else {
+            arr.push(data.substring(i * chunk_size, (i + 1) * chunk_size))
+          }
+        }
+        data = arr.join('\r\n')
+        fs.writeFile(r.filePath, data, (err) => {
+          if (err) {
+            console.log(err)
+            event.sender.send('saved-file', err)
+          }
+          event.sender.send('saved-file', args)
+        })
+      })
+  })
 }
 
 // This method will be called when Electron has finished

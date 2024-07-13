@@ -1,7 +1,8 @@
 <script setup>
-import { CircleCloseFilled, Moon, Sunny } from '@element-plus/icons-vue'
+import { CircleCloseFilled, Setting } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import { ref, onMounted } from 'vue'
+import SettingComponent from './components/SettingComponent.vue'
 
 const dataList = ref([])
 const createTODODialog = ref(false)
@@ -12,6 +13,7 @@ const detailTODOEdit = ref(false)
 const detailTODOIndex = ref(undefined)
 const detailTODOTitle = ref('')
 const detailTODODescription = ref('')
+const openSetting = ref(false)
 // eslint-disable-next-line no-undef
 globalThis.getData = () => {
   console.log(localStorage.getItem('data'))
@@ -63,6 +65,8 @@ function createTODOSave() {
     description: createTODODescription.value,
     complete: false
   })
+  createTODOTitle.value = ''
+  createTODODescription.value = ''
   saveData(dataList.value)
 }
 function createTODOCancel() {
@@ -79,59 +83,59 @@ function detailTODOSave() {
   detailTODOEdit.value = false
   saveData(dataList.value)
 }
+function reloadData() {
+  dataList.value = readData()
+}
 </script>
 
 <template>
-  <el-main>
-    <h1>代办清单 / TODO List</h1>
-    <el-row justify="center">
-      <el-col :span="18">
-        <el-button
-          size="large"
-          type="primary"
-          style="width: 100%; margin-bottom: 16px"
-          @click="createTODO"
-          >添加代办</el-button
-        >
-      </el-col>
-    </el-row>
-    <el-row gutter="8">
-      <el-col :span="24">
-        <el-card v-for="(item, index) in dataList" :key="index" shadow="hover" class="card">
-          <template #default>
-            <el-row align="middle">
-              <el-col :span="2">
-                <el-checkbox v-model="item.complete" size="large" @change="checkChange(index)" />
-              </el-col>
-              <el-col :span="19">
-                <el-text
-                  :tag="item.complete ? 'del' : 'span'"
-                  :type="item.complete ? 'info' : ''"
-                  size="large"
-                  class="pointer"
-                  @click="openDetail(index)"
-                  >{{ item.title }}</el-text
-                >
-              </el-col>
-              <el-col :span="1">
-                <el-tooltip content="删除代办">
-                  <el-icon color="red" size="large" class="pointer" @click="deleteTODO(index)">
-                    <CircleCloseFilled />
-                  </el-icon>
-                </el-tooltip>
-              </el-col>
-            </el-row>
-          </template>
-        </el-card>
-      </el-col>
-    </el-row>
-  </el-main>
-  <el-backtop :right="100" :bottom="100">
+  <el-main style="height: calc(100vh - 40px)">
     <div>
-      <el-icon><Moon /></el-icon>
-      <el-icon><Sunny /></el-icon>
+      <h1>代办清单 / TODO List</h1>
+      <el-row justify="center">
+        <el-col :span="18">
+          <el-button
+            size="large"
+            type="primary"
+            style="width: 100%; margin-bottom: 16px"
+            @click="createTODO"
+            >添加代办</el-button
+          >
+        </el-col>
+      </el-row>
     </div>
-  </el-backtop>
+    <el-scrollbar height="calc(100vh - 200px)" style="height: auto">
+      <el-card v-for="(item, index) in dataList" :key="index" class="card" shadow="hover">
+        <template #default>
+          <el-row align="middle">
+            <el-col :span="2">
+              <el-checkbox v-model="item.complete" size="large" @change="checkChange(index)" />
+            </el-col>
+            <el-col :span="19">
+              <el-text
+                :tag="item.complete ? 'del' : 'span'"
+                :type="item.complete ? 'info' : ''"
+                size="large"
+                class="pointer"
+                @click="openDetail(index)"
+                >{{ item.title }}</el-text
+              >
+            </el-col>
+            <el-col :span="1">
+              <el-tooltip content="删除代办">
+                <el-icon color="red" size="large" class="pointer" @click="deleteTODO(index)">
+                  <CircleCloseFilled />
+                </el-icon>
+              </el-tooltip>
+            </el-col>
+          </el-row>
+        </template>
+      </el-card>
+    </el-scrollbar>
+  </el-main>
+  <el-affix position="top" :z-index="999">
+    <el-icon @click="openSetting = true" style="margin-left: 16px" class="pointer"><Setting /></el-icon>
+  </el-affix>
   <el-dialog v-model="createTODODialog" width="80%">
     <template #header>
       <span>创建代办</span>
@@ -176,6 +180,7 @@ function detailTODOSave() {
       >
     </template>
   </el-dialog>
+  <SettingComponent @reload="reloadData" v-model="openSetting" />
 </template>
 
 <style scoped>
